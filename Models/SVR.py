@@ -10,7 +10,7 @@ from skopt.space import Real, Categorical, Integer
 from skopt import BayesSearchCV
 
 """
-Given a train/validate and test dataset, will train and evaluate a random forest model
+Given a train/validate and test dataset, will train and evaluate a support vector regression model
 
 Args:
     train_validate_filepath (str)   : Filepath to the train/validate dataset.
