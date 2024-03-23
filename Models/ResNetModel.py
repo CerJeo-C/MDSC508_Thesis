@@ -18,6 +18,16 @@ sys.path.append('/home/sergiu.cociuba/BoneLab')
 
 
 class TensorDataset(Dataset):
+     """
+    A custom dataset class that loads tensor and tabular data from a specified directory. Tabular data is loaded, but is not used. Can be removed 
+
+    Parameters:
+    - data_dir (str): Directory containing data files.
+    - bone_type (str): Type of bone to focus on.
+    - transform (callable, optional): Transformations to be applied on the image data.
+    - downsample_2 (tuple of ints, optional): Downsampling factor for each dimension.
+    - tabular_transform (callable, optional): Transformations to be applied on the tabular data.
+    """
     def __init__(self, data_dir, bone_type, transform=None, downsample_2=(2,2,2), tabular_transform=None):
         self.data_dir = data_dir
         self.bone_type = bone_type
@@ -27,9 +37,19 @@ class TensorDataset(Dataset):
         self.tensor_filenames = os.listdir(data_dir)
 
     def __len__(self):
+        """Returns the number of items in the dataset."""
         return len(self.tensor_filenames)
 
     def __getitem__(self, index):
+        """
+        Retrieves a data sample given an index.
+
+        Parameters:
+        - index (int): Index of the data sample to retrieve.
+
+        Returns:
+        - A tuple of (tensor and label) after applying the specified transformations.
+        """
         tensor_filename = self.tensor_filenames[index]
         tensor_path = os.path.join(self.data_dir, tensor_filename)
         tensor, tabular_row, _ = load(tensor_path) 
@@ -71,6 +91,16 @@ class TensorDataset(Dataset):
         return tensor, label
     
 def load(file_path):
+    """
+    Loads a data sample from a pickle file.
+
+    Parameters:
+    - file_path (str): Path to the file to be loaded.
+
+    Returns:
+    - A tuple containing the tensor, tabular data, and any additional data loaded from the file.
+    """
+    
     # Check if file exists
     if not os.path.exists(file_path):
         print("File does not exist.")
@@ -82,6 +112,13 @@ def load(file_path):
         return tensor, tabular_data, _
         
 def main(data_dir, bone_type):
+    """
+    Main function to configure and execute the model training.
+
+    Parameters:
+    - data_dir (str): Directory containing the data files.
+    - bone_type (str): Type of bone to focus on during training.
+    """
     monai.config.print_config()
     logging.basicConfig(stream=sys.stdout, level=logging.INFO)
     print("Model is: Resnet")
