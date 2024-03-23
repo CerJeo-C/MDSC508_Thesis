@@ -5,7 +5,7 @@ This project aimed to use HR-pQCT images and tabular data to train 5 different m
 Documentation for the DAFT model:
 https://github.com/ai-med/DAFT
 
-An environment containing the required libraries created by Dr. Steven Boyd's lab can be installed here:
+An environment containing the required libraries to open HR-pQCT images was created by Dr. Steven Boyd's lab can be installed here:
 https://github.com/Bonelab/Bonelab
 
 preprocessingTabularData.py is used to preprocess the tabular data
