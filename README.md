@@ -13,3 +13,8 @@ PreprocessingMain.py contains the code to preprocess and pickle the HR-pQCT imag
 preprocessScript508.sh is the script used to run the preprocessing scripts on ARC, which uses SLURM
 
 The Models folder provides all the scripts with each of the 5 models. it also contains the scripts used to run them on ARC, and to run the test Dataset on them.
+
+The MedCamCode folder provides the code to save HR-pQCT images as Nii files, upscale the attention maps, and generate a heatmap on the attention map. 
+
+Install ITK snap, load the original image, then load the modified attention map from the ColorMap and CreateAttentionMap scripts.
+Treat the attention map as a segementation, and a heatmap will be overlayed over the original image. Adjust the pixel colors as desired.
