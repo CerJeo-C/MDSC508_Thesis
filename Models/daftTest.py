@@ -25,8 +25,23 @@ import pandas as pd
 from medcam import medcam
 
 
-class TensorDataset(Dataset):
+class TensorDataset(Dataset):    """
+    Custom dataset class for loading and preprocessing medical imaging data
+    alongside tabular information from a specified directory.
+    
+    Attributes:
+        data_dir (str): Directory containing the data files.
+        bone_type (str): Type of bone to focus on ('l' for left, 'r' for right, etc.).
+        transform (callable, optional): Transformations to be applied on the image data.
+        downsample_2 (tuple of int): Downsampling factor for each dimension.
+        tabular_transform (callable, optional): Transformations to be applied on the tabular data.
+        tensor_filenames (list of str): List of filenames in the data directory.
+    """
+
     def __init__(self, data_dir, bone_type, transform=None, downsample_2=(2,2,2), tabular_transform=None):
+        """
+        Initializes the dataset object with directory info, bone type, and optional transformations.
+        """
         self.data_dir = data_dir
         self.bone_type = bone_type
         self.transform = transform
@@ -35,9 +50,19 @@ class TensorDataset(Dataset):
         self.tensor_filenames = os.listdir(data_dir)
 
     def __len__(self):
+        """Returns the total number of files in the dataset."""
         return len(self.tensor_filenames)
 
     def __getitem__(self, index):
+        """
+        Retrieves a tensor and its corresponding label from the dataset at the specified index.
+        
+        Parameters:
+            index (int): Index of the item to retrieve.
+        
+        Returns:
+            tuple: A tuple containing the preprocessed tensor, its label, and is tabular data
+        """
         tensor_filename = self.tensor_filenames[index]
         tensor_path = os.path.join(self.data_dir, tensor_filename)
         tensor, tabular_row, _ = load(tensor_path) 
@@ -81,6 +106,15 @@ class TensorDataset(Dataset):
 
 
 def load(file_path):
+    """
+    Loads and unpickles data from the specified file path.
+    
+    Parameters:
+        file_path (str): Path to the file to load.
+        
+    Returns:
+        tuple: A tuple containing the loaded tensor, tabular data, and additional data.
+    """
     # Check if file exists
     if not os.path.exists(file_path):
         print("File does not exist.")
@@ -92,6 +126,15 @@ def load(file_path):
         return tensor, tabular_data, _
 
 def load_model(model_path):
+    """
+    Loads a Daft model
+
+    Parameters:
+    - model_path (str): Path to the previously trained model
+
+    Returns:
+    - The loaded model
+    """
     model = DAFT(
         in_channels=1,  
         n_outputs=1, 
@@ -103,6 +146,18 @@ def load_model(model_path):
     return model
 
 def evaluate_model(model, test_loader, device):
+    """
+    Evaluates the model on a test dataset
+
+    Parameters:
+    - model (ResNet): The loaded ResNet model
+    - test_loader (DataLoader): DataLoader object that contains the inputs
+    - device (device) Device (GPU) the data is associated with
+    
+
+    Returns:
+    - A list of the Predictions and true values from the model and the performance metrics (MSE, R2, and MAE)
+    """
     model = medcam.inject(model, output_dir='attention_maps', layer='auto', save_maps=True)
     predictions = []
     targets = []
@@ -120,6 +175,18 @@ def evaluate_model(model, test_loader, device):
     return predictions, targets, mae, r2, mse
 
 def main(test_data_dir, bone_type, model_path):
+    """
+    Main method to train the ResNet on a training dataset
+
+    Parameters:
+    - test_data_dir (Str): Directory containing the test dataset of HR-pQCT images
+    - bone_type (char): Which bone is being evaluated (Radius or Tibia)
+    - model_path: Path to where the previously trained model is saved
+
+    Returns:
+    - Nothing
+    - Saves the performance metrics to a .csv file
+    """
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = load_model(model_path).to(device)
     
