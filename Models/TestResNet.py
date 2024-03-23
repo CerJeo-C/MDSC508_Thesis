@@ -174,18 +174,18 @@ def evaluate_model(model, test_loader, device):
 
 def main(test_data_dir, bone_type, model_path):
       """
-    Main method to train the ResNet on a training dataset
-
-    Parameters:
-    - test_data_dir (Str): Directory containing the test dataset of HR-pQCT images
-    - bone_type (char): Which bone is being evaluated (Radius or Tibia)
-    - model_path: Path to where the previously trained model is saved
-
-    Returns:
-    - Nothing
-    - Saves the performance metrics to a .csv file
-    - Attention maps will be produced in the CWD, named attention_maps
-    """
+      Main method to train the ResNet on a training dataset
+      
+      Parameters:
+      - test_data_dir (Str): Directory containing the test dataset of HR-pQCT images
+      - bone_type (char): Which bone is being evaluated (Radius or Tibia)
+      - model_path: Path to where the previously trained model is saved
+      
+      Returns:
+      - Nothing
+      - Saves the performance metrics to a .csv file
+      - Attention maps will be produced in the CWD, named attention_maps
+      """
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = load_model(model_path).to(device)
     
