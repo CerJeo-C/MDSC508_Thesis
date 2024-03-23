@@ -9,6 +9,18 @@ from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 from skopt.space import Real, Categorical, Integer
 from skopt import BayesSearchCV
 
+"""
+Given a train/validate and test dataset, will train and evaluate a random forest model
+
+Args:
+    train_validate_filepath (str)   : Filepath to the train/validate dataset.
+    test_filepath (str)             : Filepath to the test dataset.
+    bone_type (str)                 : Either t or r, representing which bone you want to make a model for
+
+Returns:
+    None: This model will produce the model coefficients, performance metrics, and testing results in the 3 different csv files
+"""
+
 # Parsing arguments
 parser = argparse.ArgumentParser(description='Support Vector Regression with Cross-Validation on Train-Validate and Test Sets')
 parser.add_argument('train_validate_filepath', type=str, help='Path to the train-validate CSV file')
