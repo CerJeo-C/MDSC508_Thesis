@@ -22,15 +22,14 @@ from sklearn.metrics import mean_absolute_error, r2_score, mean_squared_error
 
 class TensorDataset(Dataset):
       """
-    A custom dataset class that loads tensor and tabular data from a specified directory.
-
-    Parameters:
-    - data_dir (str): Directory containing data files.
-    - bone_type (str): Type of bone to focus on.
-    - transform (callable, optional): Transformations to be applied on the image data.
-    - downsample_2 (tuple of ints, optional): Downsampling factor for each dimension.
-    - tabular_transform (callable, optional): Transformations to be applied on the tabular data.
-    """
+      A custom dataset class that loads tensor and tabular data from a specified directory.
+      Parameters:
+      - data_dir (str): Directory containing data files.
+      - bone_type (str): Type of bone to focus on.
+      - transform (callable, optional): Transformations to be applied on the image data.
+      - downsample_2 (tuple of ints, optional): Downsampling factor for each dimension.
+      - tabular_transform (callable, optional): Transformations to be applied on the tabular data.
+      """
     def __init__(self, data_dir, bone_type, transform=None, downsample_2=(2,2,2), tabular_transform=None):
         self.data_dir = data_dir
         self.bone_type = bone_type
