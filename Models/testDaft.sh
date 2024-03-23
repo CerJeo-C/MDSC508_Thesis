@@ -11,8 +11,7 @@
 export PATH=/home/sergiu.cociuba/miniconda3/bin:$PATH
 
 ####### Script Below ############
-. /home/sergiu.cociuba/conda_init/sergiu.sh
-conda activate medcam                                                             # Activates the monai environment
+source activate medcam                                                            # Activates the monai environment
 cd "/home/sergiu.cociuba/BoneLab/DAFT/daft/"
 #script_dir="/home/sergiu.cociuba/BoneLab/DAFT/daft/"                     # Specifies where the python scripts are
 data_dir="/home/sergiu.cociuba/BoneLab/DAFT/daft/Data03/Tibia/Test"                        # Where the test directory is
