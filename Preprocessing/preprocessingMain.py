@@ -3,11 +3,11 @@ import os
 sys.path.append('/home/sergiu.cociuba/BoneLab/DenseNet256/Preprocessing_Fix/Bonelab/MONAI/monai')
 sys.path.append('/home/sergiu.cociuba/BoneLab/DenseNet256/Preprocessing_Fix/Bonelab')
 sys.path.append('/home/sergiu.cociuba/BoneLab/DenseNet256/Preprocessing_Fix/bonelab_pytorch_lightning/')
-from Preprocessing import get_file_paths
-from Preprocessing import import_csv
-from Preprocessing import normalize_pixels
-from Preprocessing import pad_to_desired_shape
-from Preprocessing import pickle_object_to_file
+from preprocessing import get_file_paths
+from preprocessing import import_csv
+from preprocessing import normalize_pixels
+from preprocessing import pad_to_desired_shape
+from preprocessing import pickle_object_to_file
 from blpytorchlightning.dataset_components.file_loaders.AIMLoader import AIMLoader
 
 # First argument passed will contain the filepath to your images
