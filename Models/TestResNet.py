@@ -21,6 +21,16 @@ from sklearn.metrics import mean_absolute_error, r2_score, mean_squared_error
 
 
 class TensorDataset(Dataset):
+      """
+    A custom dataset class that loads tensor and tabular data from a specified directory.
+
+    Parameters:
+    - data_dir (str): Directory containing data files.
+    - bone_type (str): Type of bone to focus on.
+    - transform (callable, optional): Transformations to be applied on the image data.
+    - downsample_2 (tuple of ints, optional): Downsampling factor for each dimension.
+    - tabular_transform (callable, optional): Transformations to be applied on the tabular data.
+    """
     def __init__(self, data_dir, bone_type, transform=None, downsample_2=(2,2,2), tabular_transform=None):
         self.data_dir = data_dir
         self.bone_type = bone_type
@@ -30,9 +40,19 @@ class TensorDataset(Dataset):
         self.tensor_filenames = os.listdir(data_dir)
 
     def __len__(self):
+        """Returns the number of items in the dataset."""
         return len(self.tensor_filenames)
 
     def __getitem__(self, index):
+        """
+        Retrieves a data sample given an index.
+
+        Parameters:
+        - index (int): Index of the data sample to retrieve.
+
+        Returns:
+        - A tuple of (tensor, label, tabular_data) after applying the specified transformations.
+        """
         tensor_filename = self.tensor_filenames[index]
         tensor_path = os.path.join(self.data_dir, tensor_filename)
         tensor, tabular_row, _ = load(tensor_path) 
@@ -76,6 +96,15 @@ class TensorDataset(Dataset):
 
 
 def load(file_path):
+    """
+    Loads a data sample from a pickle file.
+
+    Parameters:
+    - file_path (str): Path to the file to be loaded.
+
+    Returns:
+    - A tuple containing the tensor, tabular data, and any additional data loaded from the file.
+    """
     # Check if file exists
     if not os.path.exists(file_path):
         print("File does not exist.")
@@ -87,6 +116,15 @@ def load(file_path):
         return tensor, tabular_data, _
 
 def load_model(model_path):
+    """
+    Loads a ResNet model
+
+    Parameters:
+    - model_path (str): Path to the previously trained model
+
+    Returns:
+    - The loaded model
+    """
     model = ResNet(
         block='basic',  
         layers=[2, 2, 2, 2],  
@@ -107,6 +145,18 @@ def load_model(model_path):
     return model
 
 def evaluate_model(model, test_loader, device):
+    """
+    Evaluates the model on a test dataset
+
+    Parameters:
+    - model (ResNet): The loaded ResNet model
+    - test_loader (DataLoader): DataLoader object that contains the inputs
+    - device (device) Device (GPU) the data is associated with
+    
+
+    Returns:
+    - A list of the Predictions and true values from the model and the performance metrics (MSE, R2, and MAE)
+    """
     model = medcam.inject(model, output_dir='attention_maps', layer='auto', save_maps=True)
     predictions = []
     targets = []
